@@ -108,3 +108,46 @@ AWS、アーキテクチャ、セキュリティ、ネットワークツール
 #### 実践系
 
 EC2、VPC、S3などの標準機能を使った構築
+
+## AWSの全体像
+
+### アプリケーション統合
+
+- アプリケーション同士のメッセージや受信、連携。疎結合化することができるようになる
+- 【重要】SQS（Simple Queue Service。メッセージキュー。処理の順番を決めて処理させる）、SNS（Simple Notification Service。プッシュ機能）
+
+### コンピューティング
+
+- 一番ベーシックな機能
+- 【重要】EC2、EC2 AutoScaling、Lambda、ELB
+- 【必須ではない】ElasticContainerService（Docker）、ElasticBeanstalk（サーバー構築を一部自動化して管理してくれる）
+
+### ストレージ
+
+- 品質に関わるのでテストによく出る
+- 【重要】S3（特によく出る）、EBS（EC2にアタッチして使うストレージ）、EFS（EBSと違って複数のEC2からアクセスできる）、Glacier（S3と一緒に使われることが多い）、FSx for Win
+- 【必須ではない】StrageGateway
+
+### データベース
+
+- 【重要】Aurora、RDS、DynamoDB（NoSQL）、ElasticCache（インメモリ型の高速処理ができるNoSQL）、Redshift
+
+### ネットワーク
+
+- 【重要】VPC、CloudFront（CDNを作ることができる）、Route53
+- 【必須ではない】APIGateway、DirectConnect、TransitGateway
+
+### マネジメントガバナンス
+
+- 運用管理
+- 【重要】CloudWatch（まずはこれから）、AutoScaling（負荷の軽減）、CloudFormation（yamlなどでテンプレを書いておいてEC2を作ることができる）、マネジメントコンソール
+- 【必須ではない】CloudTrail、Config、OpsWorks、Service Catalog、System Manager、Trusted Advisor
+
+### セキュリティ
+
+- 【重要】IAM（アカウント管理）、Organizations（複数アカウントの管理）、Key Management Service（暗号化キーの作成と管理）
+- 【必須ではない】いろいろ
+
+### 開発者ツール
+
+- CodeDeploy、CodeCommit、CodePipeline、CodeBuild、コマンドラインインターフェイス
