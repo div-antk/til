@@ -123,3 +123,42 @@ nano（インスタンスの容量）
 1. Elastic IPの割当
 2. EC2インスタンスへのElastic IPの設定
 3. Elastic IPの解放
+
+## Bashシェルスクリプトによる設定
+
+### シェルスクリプト
+
+ユーザーとカーネル（OSの基幹機能）とのやり取りで利用される言語
+
+### Bash
+
+Linuxにおけるデファクトスタンダード（事実上の標準）になっているシェルスクリプト
+
+- SSH接続したあとにBashでLinuxを操作する
+- 毎回同じ設定（初期設定）をするのが面倒（Apacheのインストールなど）なことをBashで一括設定する
+- AWSマネジメントコンソールにて設定できる
+- インスタンスの起動のときに仕込んでおく
+
+1. インスタンスを起動
+2. Bashシェルスクリプトの設定
+3. Linuxの設定結果を確認する
+
+- EC2作成時の『ステップ3』の『高度な設定（ユーザーデータ）』でテキスト形式でbashスクリプトを書いていく
+
+```bash
+#!/bin/bash
+# サーバーの設定変更
+sed -i 's/^HOSTNAME=[a-zA-Z0-9\.\-]*$/HOSTNAME=udemy-bash/g' /etc/sysconfig/network
+hostname 'udemy-bash'
+cp /usr/share/zoneinfo/Japan /etc/localtime
+sed -i 's|^ZONE=[a-zA-Z0-9\.\-\"]*$|ZONE="Asia/Tokyo"|g' /etc/sysconfig/clock
+echo "LANG=ja_JP.UTF-8" > /etc/sysconfig/i18n
+# アパッチのインストール
+sudo yum update -y
+sudo yum install httpd -y 
+sudo chkconfig httpd on
+====
+```
+
+`yum list installed | grep httpd`  
+でyumがちゃんとインストールされているかを確認する
