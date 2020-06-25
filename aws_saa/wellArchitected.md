@@ -12,6 +12,12 @@
   - 運用
     - 運用中に定期的にホワイトペーパーに沿ったレビューを実施し、なにかズレやリスク、改善点がないか確認する
 
+1. Reliability: 信頼性
+2. Performance Efficiency: パフォーマンス効率
+3. Security: セキュリティ
+4. Cost Optimization: コスト最適化
+5. Operational Excellence: 運用上の優秀性
+
 ## Reliability: 信頼性
 
 - 障害による中断、停止と障害復旧による影響を軽減するインフラストラクチャを構成する
@@ -211,11 +217,16 @@ EC2ではなくLambdaを使うことでサーバー代をかけずアクショ�
 
 #### 準備
 
+環境設定を自動化ツールを使う
+
 - CloudFormation
 - Codeシリーズ
 - Runbook Playbook
+  - 定石本。運用のガイドブック
 
 #### 運用
+
+モニタリングなどのツール
 
 - SystemManeger
 - ServiceCatalog
@@ -229,6 +240,8 @@ EC2ではなくLambdaを使うことでサーバー代をかけずアクショ�
 #### 進化
 
 継続的かつ段階的な改善のために、時間とリソースを割り当て、運用の有効性と効率性を向上させる
+
+- AWSの機能は常にアップデートされているのでそれをキャッチアップしていく
 
 ## Well-Aechitected Frameworkを構成する3つの要素
 
