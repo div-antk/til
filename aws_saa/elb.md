@@ -111,3 +111,40 @@ ALBを使うのが標準的だが、かなりの大量処理が要求される�
   - 作ったパブリックにインターネットゲートウェイをつける
 - ルートテーブルにプライベートが関連付けられていないのでプライベート2つを関連付ける
 - これで1つのVPCにAZを設置して、それぞれにプライベートとパブリックを設置できたことになる
+- S3でバケット作成。 `index.html` を入れておく
+- EC2インスタンスを作ってパブリック1aのサブネットに割り当てる
+  - 『自動割り当てパブリックIP』を有効にする
+  - S3アクセスのIAMロールを割り当て
+- bashスクリプトを使用
+
+```bash
+#!/bin/bash
+# サーバーの設定変更
+sed -i 's/^HOSTNAME=[a-zA-Z0-9\.\-]*$/HOSTNAME=udemy-bash/g' /etc/sysconfig/network
+hostname 'udemy-bash'
+cp /usr/share/zoneinfo/Japan /etc/localtime
+sed -i 's|^ZONE=[a-zA-Z0-9\.\-\"]*$|ZONE="Asia/Tokyo"|g' /etc/sysconfig/clock
+echo "LANG=ja_JP.UTF-8" > /etc/sysconfig/i18n
+# アパッチのインストール
+sudo yum update -y
+sudo yum install httpd -y
+sudo service httpd start
+sudo chkconfig httpd on
+# index.htmlの設置
+aws s3 cp s3://バケット名/index.html /var/www/html
+```
+
+- 新しいセキュリティグループ作成、HTTPとHTTPSを追加
+- EC2起動
+- ターミナルでEC2にアクセス
+  - `yum list installed | grep httpd` でApacheがインストールされてるかを確認
+  - `cd /var/www/html` でバケットに移動。htmlファイルが有るか確認
+  - vimでhtmlに `public-1a` とか追加する
+- EC2のコンソールからインスタンスを選択して『イメージの作成』
+  - 名前だけ変えて作成。
+- 『AMI』から作ったイメージを選択して『起動』
+- パブリック1cのサブネットに割り当てる
+  - 『自動割り当てパブリックIP』を有効にする
+  - S3アクセスのIAMロールを割り当て
+- イメージから作った場合は設定がさっきのと同じなのでセキュリティグループまでパス
+- 『既存のセキュリティグループ』で上のものを割り当て
