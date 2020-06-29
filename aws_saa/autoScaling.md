@@ -159,3 +159,24 @@ ELB構成で冗長化した上でAuto-Scalingを設定して自動拡張でき�
 - サイドメニューの『Auto-Scalingグループ』の『操作』から編集
 - 『終了ポリシー』をdefaultから『NewestInstance』を選択
 - インスタンスに戻り、元々あったインスタンス2つにそれぞれ『Auto-Scalingグループをアタッチ』。既存のものを選択、にする
+- しばらくすると元々あったインスタンス2つが終了する
+- 名前がすべて変更されてしまうが、Auto-Scalingグループの『インスタンス』から確認できる。『起動設定/テンプレート』に何も書いてなければ元々あったインスタンス
+
+## 負荷テストハンズオンのメモ
+
+- ターミナルで起動しているどっちかのインスタンスに入る
+- 負荷テストのためのストレスツールを入れる
+
+```bash
+#stressのインストール
+wget http://ftp.riken.jp/Linux/dag/redhat/el7/en/x86_64/rpmforge/RPMS/stress-1.0.2-1.el7.rf.x86_64.rpm
+
+rpm -ivh stress-1.0.2-1.el7.rf.x86_64.rpm
+
+rpm -qa|grep stress
+
+stress --version
+
+#stressによるCPU負荷がけコマンド
+stress -c 1 -q &
+```
