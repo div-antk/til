@@ -114,11 +114,6 @@ XML、JSON、文書
 - 行ごとに任意の名前のカラムを無数に格納できる
   - キーバリューストアより格納するデータや形式が柔軟
 
-### ドキュメントDB
-
-- キーに対してバリューではなく、JSONやXMLなどのデータを格納
-- 複雑なデータ構造を扱うアプリで生産性高く柔軟に開発する
-
 ### グラフデータベース
 
 - グラフ理論に基づき、データ同士の関係をグラフで相互に結びついた要素で構成される
@@ -246,3 +241,90 @@ S3はデータを蓄積するというところに特化している
 ### 非構造化DB（非構造化データ）
 
 - 非構造化データを利用したデータ分析、人工知能構築
+
+## ワイドカラム型
+
+キーに対してカラムを大規模に登録できるのがワイドカラム型。  
+これもキーバリューストアでよく使われる形式
+
+- 概要
+  - 分散して、シンプルなオペレーションを高速に実地できるDB
+  - データ取得する際にデータ結合しなくても済むように、可能な限り多くのデータを同じ行に保持
+- アーキテクチャ
+  - 結果整合性を採用
+  - キースペース、カラムファミリ、ロウ、（スーパーカラム）カラムの入れ子構造
+  - SQLライクなデータ操作が可能
+  - データ操作は挿入、削除、参照のみで、データの更新は挿入による上書きしかできない
+- 利用データ
+  - Facebook/Twitterなどソーシャルデータの位置情報データストレージ、リアルタイム分析、データマイニング処理
+- オンプレ、ソフトウェア
+  - Cassandra
+  - Apache HBASE
+- AWSサービス
+  - DynamoDB
+
+---
+
+キーとカラムが入れ子構造となったデータモデルを利用
+
+- KeySpace1
+  - Column family 1
+    - RouID1
+      - Name: xxx, Value: xxx, Timestamp: xxx
+      - Name: xxx, Value: xxx, Timestamp: xxx
+      - Name: xxx, Value: xxx, Timestamp: xxx
+    - RouID2
+      - Name: xxx, Value: xxx, Timestamp: xxx
+      - Name: xxx, Value: xxx, Timestamp: xxx
+      - Name: xxx, Value: xxx, Timestamp: xxx
+  - Column family 2
+    - RouID1
+      - Name: xxx, Value: xxx, Timestamp: xxx
+      - Name: xxx, Value: xxx, Timestamp: xxx
+      - Name: xxx, Value: xxx, Timestamp: xxx
+    - RouID2
+      - Name: xxx, Value: xxx, Timestamp: xxx
+      - Name: xxx, Value: xxx, Timestamp: xxx
+      - Name: xxx, Value: xxx, Timestamp: xxx
+
+## ドキュメントDB
+
+キーに対してドキュメント指向でXMLなどのデータを格納する。  
+キーに対してバリューではなく、JSONやXMLなどのデータを格納。  
+複雑なデータ構造を扱うアプリで生産性高く柔軟に開発する
+
+- 概要
+  - ドキュメント指向データベースでは、さまざまなデータ構造のドキュメントを混在して保持することができる
+- アーキテクチャ
+  - JSON/XMLをデータモデルに利用
+  - 小規模データの同期集計処理が可能だが、バッチは不向き
+  - SQLライクなデータ操作が可能で、KVSよりもクエリが豊富なため操作しやすい
+  - Shardingによるデータベース分散化
+- 利用データ
+  - 半構造化データ（XML/JSON）
+  - 大規模WEBのログ保管など
+  - オンラインゲームデータ
+  - カタログのデータ管理
+- オンプレ、ソフトウェア
+  - mongoDB
+    - 一番有名
+  - MarkLogic
+  - CouchDB
+  - Couchbase
+- AWSサービス
+  - Amazon DocumentDB
+  - mongoDB
+    - AWS内に構築して利用する
+
+---
+
+様々な形式のドキュメント構造を一緒に保存できる
+
+## インメモリデータグリッド
+
+KVSの仕組みを、メモリを利用してより高性能にしたDB
+
+- 概要
+  - 大量のデータを多数のサーバのメモリ上で分散して管理する技術
+  - ミリ秒単位の高速な応答処理が可能
+- 
