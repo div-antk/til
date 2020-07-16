@@ -114,4 +114,15 @@ MySQLとPostgreSQLのスナップショットからAuroraへとマイグレー�
 - アクションから『クロスリージョンレプリカ』で最大5つまでリージョンを跨いだレプリカを作ることができる
 - 『クローンの作成』で選択しているDBの設定を素早く再現することができる。スナップショットで作るよりも手軽で簡単にできる
 - RDSとの大きな違いはクラスタ表示になっており、リーダーの追加、クロスリージョンレプリカの作成、クローンの作成ができるようになっていること
-- 『エンドポイント』に表示されているものをコピーしてターミナルからSSH接続する
+- 『エンドポイント』に表示されているものをコピーする
+- MySQLがインストールされたEC2にアクセスする
+  - `mysql -h エンドポイント -u antk -p`
+  - パスワード
+  - MySQLに入れる
+- `create database testdb;`
+- `use test db;`
+- `create table testdb.account(id int, name varchar(20));`
+  - テーブルを作れる
+- `insert into account values (1001, "hiroyuki");`
+- `select * from account;`
+- 以上のようにMySQLとほぼ同じように使うことができる
