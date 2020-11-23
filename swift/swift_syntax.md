@@ -57,3 +57,22 @@ if (num > 10) {
 for num in 1..< 100 {
   print ("数字: \(num)")
 }
+```
+
+## FizzBuzz
+
+```swift
+let num:Int = 1
+
+for num in 1..<101 {
+    if (num % 15 == 0) {
+        print("FizzBuzz")
+    } else if (num % 5 == 0) {
+        print("Buzz")
+    } else if (num % 3 == 0) {
+        print("Fizz")
+    } else {
+        print(num)
+    }
+}
+```
