@@ -1,6 +1,11 @@
-# メリークリスマス！
+# メリークリスマス
 
 `viewDidLoad` の中に処理を書いて、アプリを起動したときにクリスマスだったら鐘の音を鳴らそう。
+
+- 日付の取得方法
+- mp3の再生方法
+
+この2つがメインです。
 
 ## 今日の日付を取得し、クリスマスかどうかを判断する
 
@@ -15,7 +20,7 @@ let date = DateFormatter()
 date.dateFormat = DateFormatter.dateFormat(fromTemplate: "Md", options: 0, locale: Locale(identifier: "ja_JP"))
 
 // 定義したフォーマットで今日の日付を表示する
-if date.string(from: today) == "12/24" {
+if date.string(from: today) == "12/25" {
     print("メリークリスマス")
 }
 ```
@@ -35,30 +40,83 @@ iOSに最初から入っている鐘の音を鳴らしたい場合はこちら�
 
 今回は気の利いたmp3を用意して鳴らしてみよう。
 と言ってもこの記事では音が鳴らないし、どこから音源を持ってくるかは特に書かないので、**ロマンチックな鐘の音が鳴るんだな**と思って読んでほしい。
-音源はアプリのディレクトリの直下に置くことにする。最初に `ViewController.swift` が置いてある階層と同じ。
 
 ### 音を再生するメソッドを作る
 
-`viewDidLoad` の中ではなく外に作る。
-後で全体のコードは書くが、とりあえず下のコードの追記が必要になる
+まず `xmasBell.mp3` という音源をアプリのディレクトリの直下に置くことにする。最初に `ViewController.swift` が置いてある階層と同じ。
+
+メソッドは `viewDidLoad` の中ではなく外に作る。
+後で全体のコードは書くが、音を鳴らすために必要なコードは以下。
 
 ```swift
 // AVFoundationを使う
 import AVFoundation
 
-var player:AVAudioPlayer?
+var audioPlayer?
 
-func playSound() {
-  // ファイル名と形式を指定して再生する
-  let soundURL = Bundle.main.url(forResource: "xmasBell", withExtension: "mp3")
+// 中略
+
+  func playSound() {
+    // ファイル名と形式を指定して再生する
+    let soundURL = Bundle.main.url(forResource: "xmasBell", withExtension: "mp3")
+
+    // 例外処理
+    do {
+      audioPlayer = try AVAudioPlayer(contentsOf: soundURL!)
+      // 再生
+      audioPlayer?.play()
+    } catch {
+      print("エラーです")
+    }
+  }
+```
+
+メソッドができたら、日付を判定する `if` の中で呼び出してあげればいい。
+
+```swift
+playSound()
+```
+
+## 完成🎄
+
+```swift
+import UIKit
+import AVFoundation
+
+class ViewController: UIViewController {
   
-  // 例外処理
-  do {
-    player = try AVAudioPlayer(contentsOf: soundURL!)
-    player?.play()
-  } catch {
-    print("ファイルがありません")
+  var audioPlayer:AVAudioPlayer!
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    let today = Date()
+    let date = DateFormatter()
+
+    // 日付表示のフォーマットを定義する
+    date.dateFormat = DateFormatter.dateFormat(fromTemplate: "Md", options: 0, locale: Locale(identifier: "ja_JP"))
+
+    if date.string(from: today) == "12/25" {
+      // 音源を再生するメソッドを呼び出す
+      playSound()
+    }
+  }
+  
+  // 音源を再生するメソッド
+  func playSound() {
+    // ファイル名と形式を指定して再生する
+    let soundURL = Bundle.main.url(forResource: "xmasBell", withExtension: "mp3")
+
+    // 例外処理
+    do {
+      audioPlayer = try AVAudioPlayer(contentsOf: soundURL!)
+      // 再生
+      audioPlayer?.play()
+    } catch {
+      print("ファイルがありません")
+    }
   }
 }
 ```
 
+よいクリスマスを。
