@@ -15,5 +15,6 @@ printTest(test: stringTest1) {
 }
 ```
 
-返り値がない場合に `completion` を使う？
+返り値がない場合に `@escaping` を使う。
+慣習的に `completion` と書いているだけで、実際は `hoge` とかでもいい。
 
