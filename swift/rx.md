@@ -33,8 +33,15 @@
   - Swiftではこの書き方はできない
 - これを発展させたのがRxSwift
 
-#### 通知先
+### RxSwiftのObserver/Observable
 
+push型Observerパターンに3つの要素が足されただけ。
+
+1. 通知する値は next, error, comoleted という文脈がついた Event になる
+2. next 以外が通知されると、以後一切通知がされなくなる
+3. unsubcribeo の責務を Disposable なるオブジェクトに分離している
+
+#### 通知先
 
 - RxSwiftにおけるストリームを生産する概念として、クラス `Observable<T>` で提供される
 
