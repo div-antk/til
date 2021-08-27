@@ -53,5 +53,45 @@ push型Observerパターンに3つの要素が足されただけ。
 
 ストリームから伝搬されてくるイベントを順次処理する仕組み
 
-## PublishSubject
+## BehaviorSubject/Relay
+
+- subscribe時にひとつ過去のイベントを受け取ることができる
+- 最初にsubscribeするときには、宣言時に設定した初期値を受け取る
+- internal（public）なSubjectやRelayを定義してしまうとクラスの外からもイベントを発生することができてしまうので、privateとして定義して、外部へ公開するためのObservableを用意するのが一般的
+
+```swift
+private let items = BehaviorRelay<[String]>(value: [])
+
+var itemsObservable: Observable<[String]> {
+  return items.asObservable()
+}
+```
+
+### Subject
+
+通信処理やDB処理など、エラーが発生したときその内容によって処理を分岐させたい
+
+### Realay
+
+UIに値をBindする。
+UIにBindしているObservableでonNextやonCompleteが発生してしまうと購読が止まってしまい、その先のタップイベントや入力イベントを拾えなくなってしまうので、onNextのみ流れることが保証されているRelayを使うのが適切。
+
+## bind
+
+- Observable/Observerに対してbindメソッドを使うと、指定したものにイベントストリームを接続できる
+- 単方向データバインディング
+
+```swift
+// bindを使用した場合
+nameTextField.rx.text
+  .bind(to: nameLabel.rx.text)
+  .disposed(by: disposeBag)
+
+// subscribeを使用した場合
+nameTextField.rx.text
+  .subscribe(onNext: {[weak self] text in
+    self?.nameLabel.text = text
+  })
+  .disposed(by: disposeBag)
+```
 
