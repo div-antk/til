@@ -95,3 +95,28 @@ nameTextField.rx.text
   .disposed(by: disposeBag)
 ```
 
+## Oparator
+
+Observerから流れてきた値をそのままSubscribeせず、なんからの加工を施して新たにObservableする仕組み。
+
+- 変換する
+  - map
+  - flatmap
+    - など。。
+- 絞り込む
+  - filter
+    - など。。
+
+組み合わせたりとかもできる。
+
+```swift
+// ボタンをタップしたときにnameLabelにユーザの名前を表示する
+let user = User(name: "Takuya")
+
+shouUserNameButton.rx.tap
+  .map { [weak self] in
+    return self?.user.name
+  }
+  .bind(to: nameLabel.rx.text)
+  .disposed(by: disposeBag)
+```
