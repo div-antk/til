@@ -2,6 +2,7 @@
 
 - すべてのイベントはObservableとして扱う
 - VCからVMに流すのがObservable
+- Valiableはもう使わない。SubjectのラッパーであるRelay系がRxSwift5より推奨される
 
 ## ストリーム
 
