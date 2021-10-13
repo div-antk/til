@@ -4,6 +4,10 @@
 - VCからVMに流すのがObservable
 - Valiableはもう使わない。SubjectのラッパーであるRelay系がRxSwift5より推奨される
 
+## リアクティブプログラミング
+
+- インスタンス化された状態によって制御を変えるのではなく、ストリームに対して反応を記述することでアプリケーションの振る舞いを決定する
+
 ## 手続き型と宣言型
 
 ### 手続き型
@@ -136,3 +140,36 @@ shouUserNameButton.rx.tap
   .bind(to: nameLabel.rx.text)
   .disposed(by: disposeBag)
 ```
+
+## BehaviorRelay/PublishRelay
+
+- .next のみを流せる
+  - .error や .comleted が流れてこないことを保証できる
+
+### BehaviorRelayは初期値を持つが、PublishRelayは初期値を持たない
+
+```swift
+let br = BehaviorRelay<Int>(value: 1)
+
+let pr = PublishRelay<Int>()
+```
+
+### subscribeしたとき、BehaviorRelayは現在値を流し、PublishRelayは現在値を流さない
+
+```swift
+let br = BehaviorRelay<Int>(value: 1)
+
+br.subscribe { event in
+    print("br", event)
+}.disposed(by: disposeBag)
+
+let pr = PublishRelay<Int>()
+
+pr.subscribe { event in
+    print("pr", event)
+}.disposed(by: disposeBag)
+
+// 結果（publishRelayの現在値は流れてこない）
+// br next (1)
+```
+
