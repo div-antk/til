@@ -173,3 +173,17 @@ pr.subscribe { event in
 // br next (1)
 ```
 
+## mapとsubscribeによる例
+
+```swift
+// justを使って(10)がargとして渡り、IntからStringに変換される
+_ = Observable.just(10)
+    .map { (arg: Int) -> String in
+        // Stringとして返る
+        return "value: \(arg)"
+    }
+    .subscribe(onNext: { (arg: String) in
+        print(arg)
+    })
+```
+
